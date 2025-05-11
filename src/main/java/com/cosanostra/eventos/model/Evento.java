@@ -1,9 +1,7 @@
 package com.cosanostra.eventos.model;
 
+import java.time.LocalTime;
 import java.util.Date;
-
-import org.hibernate.annotations.CurrentTimestamp;
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -29,6 +27,9 @@ public class Evento {
     @Column(unique = false)
     private Date fecha;
     
+    @Column(unique = false)
+    private LocalTime hora;
+
     @Column(unique = false)
     private int cantPersonas;
 

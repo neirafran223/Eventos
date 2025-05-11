@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gestión de Eventos</title>
+    <link rel="stylesheet" href="../static/style.css" />
+  </head>
+  <body>
+    <h1>Gestión de Eventos</h1>
+
+    <form id="formEvento">
+      <input type="text" id="nombre" placeholder="Nombre" required />
+      <input type="text" id="ubicacion" placeholder="Ubicación" required />
+      <input type="datetime-local" id="fecha" required />
+      <input
+        type="number"
+        id="cantPersonas"
+        placeholder="Cantidad de Personas"
+        required
+      />
+      <input
+        type="number"
+        id="cantSeguridad"
+        placeholder="Cantidad de Seguridad"
+        required
+      />
+      <input
+        type="text"
+        id="tipoEvento"
+        placeholder="Tipo de Evento"
+        required
+      />
+      <button type="submit">Crear Evento</button>
+    </form>
+
+    <div id="loader" class="loader" style="display: none"></div>
+
+    <button id="toggleEventosBtn">Mostrar Eventos</button>
+
+    <ul id="eventosList" style="display: none"></ul>
+
+    <div id="detalleEvento" style="display: none">
+      <h2>Detalle del Evento</h2>
+      <div id="detalleContenido"></div>
+      <button onclick="volver()">Volver</button>
+    </div>
+
+    <script src="../static/script.js"></script>
+  </body>
+</html>
