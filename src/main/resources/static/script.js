@@ -4,9 +4,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const detalleEvento = document.getElementById("detalleEvento");
   const detalleContenido = document.getElementById("detalleContenido");
   const toggleBtn = document.getElementById("toggleEventosBtn");
+  const eliminarBtn = document.getElementById("eliminar");
   const loader = document.getElementById("loader");
 
   let visible = false;
+  let eventoActualId = null; // Variable para almacenar el ID del evento que se está viendo
 
   function formatearFecha(fechaStr) {
     const fecha = new Date(fechaStr);
@@ -30,10 +32,14 @@ document.addEventListener("DOMContentLoaded", () => {
             `;
           listaEventos.appendChild(li);
         });
+      })
+      .catch((err) => {
+        console.error("Error al obtener eventos:", err);
       });
   }
 
   window.verDetalle = function (id) {
+    eventoActualId = id; // Guardamos el ID del evento actual
     fetch(`http://localhost:8080/api/v1/evento/${id}`)
       .then((res) => res.json())
       .then((evento) => {
@@ -41,16 +47,52 @@ document.addEventListener("DOMContentLoaded", () => {
         listaEventos.style.display = "none";
         detalleContenido.innerHTML = `
             <h3>${evento.nombre}</h3>
-            <p>Ubicación: ${evento.ubicacion}</p>
-            <p>Fecha: ${formatearFecha(evento.fecha)}</p>
-            <p>Cantidad de personas: ${evento.cantPersonas}</p>
-            <p>Cantidad de seguridad: ${evento.cantSeguridad}</p>
-            <p>Tipo de evento: ${evento.tipoEvento}</p>
+            <p><strong>Ubicación:</strong> ${evento.ubicacion}</p>
+            <p><strong>Fecha:</strong> ${formatearFecha(evento.fecha)}</p>
+            <p><strong>Cantidad de personas:</strong> ${evento.cantPersonas}</p>
+            <p><strong>Cantidad de seguridad:</strong> ${evento.cantSeguridad}</p>
+            <p><strong>Tipo de evento:</strong> ${evento.tipoEvento}</p>
           `;
+      })
+      .catch((err) => {
+        console.error("Error al obtener detalles del evento:", err);
       });
   };
 
+  // Función para eliminar evento
+  eliminarBtn.addEventListener("click", () => {
+    if (!eventoActualId) return;
+    
+    if (!confirm("¿Estás seguro de que deseas eliminar este evento?")) {
+      return;
+    }
+
+    loader.style.display = "block";
+    
+    fetch(`http://localhost:8080/api/v1/evento/${eventoActualId}`, {
+      method: "DELETE"
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error("Error al eliminar el evento");
+      }
+      return response.json();
+    })
+    .then(() => {
+      loader.style.display = "none";
+      alert("Evento eliminado correctamente");
+      volver(); // Regresar a la lista
+      if (visible) obtenerEventos(); // Actualizar lista si está visible
+    })
+    .catch(error => {
+      loader.style.display = "none";
+      console.error("Error:", error);
+      alert("Ocurrió un error al eliminar el evento");
+    });
+  });
+
   window.volver = function () {
+    eventoActualId = null; // Limpiamos el ID del evento actual
     detalleEvento.style.display = "none";
     listaEventos.style.display = visible ? "block" : "none";
   };
@@ -89,6 +131,7 @@ document.addEventListener("DOMContentLoaded", () => {
       .catch((err) => {
         loader.style.display = "none";
         console.error("Error al crear evento:", err);
+        alert("Ocurrió un error al crear el evento");
       });
   });
 });

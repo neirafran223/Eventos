@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import com.cosanostra.eventos.model.Evento;
 import com.cosanostra.eventos.service.EventoService;
 
-@CrossOrigin(origins = "http://127.0.0.1:5500") // <-- ¡Aquí!
+@CrossOrigin(origins = "http://127.0.0.1:3000")
 @RestController
 @RequestMapping("/api/v1/evento")
 public class EventoController {

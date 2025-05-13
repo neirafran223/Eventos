@@ -35,10 +35,9 @@ button {
   color: #fff;
   border: none;
   cursor: pointer;
-  font-size: 16px; /* tamaño del texto aumentado */
-  padding: 12px; /* padding más cómodo */
+  font-size: 16px;
+  padding: 12px; 
 }
-
 button:hover {
   background-color: #0056b3;
 }
